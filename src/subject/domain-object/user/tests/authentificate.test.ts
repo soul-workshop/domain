@@ -4,10 +4,10 @@ import {
 import { ConsoleLogger } from 'rilata/src/common/logger/console-logger';
 import { JwtCreatorImpl } from 'rilata/src/infra/jwt/jwt-creator';
 import { ServerResolver } from 'rilata/src/app/server/server-resolver';
+import { AuthJwtPayload } from 'cy-core/src/types';
+import { JwtDecoderImpl } from 'cy-core/src/infra/jwt/decoder';
 import { UserAR } from '../a-root';
-import { AuthJwtPayload } from '../../../jwt-types';
-import { UserAuthDomainQuery } from '../../../domain-data/user/user-auth/a-params';
-import { DomainServerFixtures } from '../../../../fixtures';
+import { UserAuthDomainQuery } from '../../../domain-data/user/authentificate/a-params';
 
 const telegramToken = '6698548206:AAHF49aVG7c-QkIbHQb-OBGwgkYdBRSmTCo';
 
@@ -29,7 +29,7 @@ const userAr = new UserAR({
   },
 }, 0, new ConsoleLogger());
 
-const decoder = new DomainServerFixtures.TestJwtDecoder(0);
+const decoder = new JwtDecoderImpl(0);
 const creator = new JwtCreatorImpl();
 const serverResolver = {
   getJwtConfig() {

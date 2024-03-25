@@ -4,5 +4,6 @@ import { AuthModule } from './module';
 export type AuthModuleResolves = ModuleResolves<AuthModule> & {
   moduleUrl: '/api/auth-module/',
   telegramAuthHashLifetimeLimitAsSeconds?: number, // default 10 seconds
+  authentificateBotToken: string,
   userRepo: unknown,
 }

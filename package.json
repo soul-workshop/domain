@@ -1,6 +1,6 @@
 {
   "name": "cy-domain",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "author": "GIS Expert",
   "repository": {
     "type": "git",
@@ -18,10 +18,11 @@
   "description": "Предметный слой модуля субъектов ",
   "scripts": {
     "tslint": "bun tsc -noEmit",
-    "updates": "rm -rf node_modules bun.lockb && bun remove rilata && bun add craftyard/rilata-core",
+    "updates": "rm -rf node_modules/rilata node_modules/cy-core bun.lockb && bun update",
     "lint": "bun eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "dependencies": {
+    "cy-core": "craftyard/craftyard-core",
     "rilata": "craftyard/rilata-core"
   }
 }

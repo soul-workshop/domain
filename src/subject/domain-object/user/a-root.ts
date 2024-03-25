@@ -16,8 +16,8 @@ import { userARValidator } from '../../domain-data/user/v-map';
 import {
   TelegramAuthDateNotValidError, TelegramHashNotValidError, UserAuthentificationActionParams,
   UserAuthDomainQuery,
-} from '../../domain-data/user/user-auth/a-params';
-import { AuthJwtPayload } from '../../jwt-types';
+} from '../../domain-data/user/authentificate/a-params';
+import { AuthJwtPayload } from 'cy-core/src/types';
 
 export class UserAR extends AggregateRoot<UserParams> {
   protected helper: AggregateRootHelper<UserParams>;
