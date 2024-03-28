@@ -8,6 +8,6 @@ export interface UserCmdRepository {
 
 export const UserCmdRepository = {
   instance(repoResolver: Repositoriable): UserCmdRepository {
-    return repoResolver.getRepository(UserCmdRepository) as UserCmdRepository;
+    return repoResolver.resolveRepo(UserCmdRepository) as UserCmdRepository;
   },
 };

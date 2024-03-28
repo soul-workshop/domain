@@ -13,6 +13,6 @@ export interface ModelReadRepository {
 
 export const ModelReadRepository = {
   instance(repoResolver: Repositoriable): ModelReadRepository {
-    return repoResolver.getRepository(ModelReadRepository) as ModelReadRepository;
+    return repoResolver.resolveRepo(ModelReadRepository) as ModelReadRepository;
   },
 };
