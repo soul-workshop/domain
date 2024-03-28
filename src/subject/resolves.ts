@@ -1,9 +1,18 @@
 import { ModuleResolves } from 'rilata/src/app/module/module-resolves';
-import { AuthModule } from './module';
+import { SubjectModule } from './module';
+import { UserRepository } from './domain-object/user/repo';
 
-export type AuthModuleResolves = ModuleResolves<AuthModule> & {
-  moduleUrl: '/api/auth-module/',
+export type SubjectModuleResolves = ModuleResolves<SubjectModule> & {
+  moduleUrl: '/api/subject-module/',
   telegramAuthHashLifetimeLimitAsSeconds?: number, // default 10 seconds
   authentificateBotToken: string,
-  userRepo: unknown,
+  userRepo: UserRepository,
 }
+
+export const subjectModuleResolves: Omit<
+  SubjectModuleResolves,
+  'db' | 'busMessageRepo' | 'userRepo' | 'authentificateBotToken'
+> = {
+  moduleName: 'SubjectModule',
+  moduleUrl: '/api/subject-module/',
+};

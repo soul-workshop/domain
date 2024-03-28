@@ -9,6 +9,7 @@ import { Logger } from 'rilata/src/common/logger/logger';
 import { AggregateRootHelper } from 'rilata/src/domain/domain-object/aggregate-helper';
 import { DomainResult } from 'rilata/src/domain/domain-data/params-types';
 import { JwtCreator } from 'rilata/src/app/jwt/jwt-creator';
+import { AuthJwtPayload } from 'cy-core/src/types';
 import {
   UserAttrs, UserParams, UserType,
 } from '../../domain-data/user/params';
@@ -17,7 +18,6 @@ import {
   TelegramAuthDateNotValidError, TelegramHashNotValidError, UserAuthentificationActionParams,
   UserAuthDomainQuery,
 } from '../../domain-data/user/authentificate/a-params';
-import { AuthJwtPayload } from 'cy-core/src/types';
 
 export class UserAR extends AggregateRoot<UserParams> {
   protected helper: AggregateRootHelper<UserParams>;
@@ -31,8 +31,7 @@ export class UserAR extends AggregateRoot<UserParams> {
     const result = userARValidator.validate(attrs);
     if (result.isFailure()) {
       const errStr = 'Не соблюдены инварианты UserAR';
-      this.logger.error(errStr, { attrs, result });
-      throw new AssertionException(errStr);
+      throw this.logger.error(errStr, { attrs, result });
     }
     this.helper = new AggregateRootHelper('UserAR', attrs, 'userId', version, [], logger);
   }

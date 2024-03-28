@@ -1,23 +1,25 @@
 import { ModuleResolver } from 'rilata/src/app/module/module-resolver';
 import { ModuleResolveInstance } from 'rilata/src/app/resolves/types';
 import { AuthJwtPayload } from 'cy-core/src/types';
-import { AuthModule } from './module';
-import { AuthModuleResolves } from './resolves';
+import { SubjectModule } from './module';
+import { SubjectModuleResolves } from './resolves';
+import { UserRepository } from './domain-object/user/repo';
 
-export class AuthModuleResolver extends ModuleResolver<
-  AuthJwtPayload, AuthModule, AuthModuleResolves
+export class SubjectModuleResolver extends ModuleResolver<
+  AuthJwtPayload, SubjectModule, SubjectModuleResolves
 > {
-  getRealisation(key: unknown): unknown {
+  resolve(key: unknown): unknown {
     if (key === 'botToken') return this.resolves.authentificateBotToken;
     if (key === 'authHashLifeTime') return this.resolves.telegramAuthHashLifetimeLimitAsSeconds ?? 10;
-    throw Error(`not finded key by: ${key}`);
+    throw this.getLogger().error(`not finded key by: ${key}`, key);
   }
 
-  getRepository(...args: unknown[]): ModuleResolveInstance {
-    throw new Error('Method not implemented.');
+  resolveRepo(key: unknown): ModuleResolveInstance {
+    if (key === UserRepository) return this.resolves.userRepo;
+    throw this.getLogger().error(`not finded key by: ${key}`, key);
   }
 
-  getFacade(...args: unknown[]): ModuleResolveInstance {
+  resolveFacade(...args: unknown[]): ModuleResolveInstance {
     throw new Error('Method not implemented.');
   }
 }

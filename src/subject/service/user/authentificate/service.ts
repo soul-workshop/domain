@@ -38,9 +38,9 @@ export class UserAuthentificationService extends QueryService<UserAuthentificati
 
     const resolver = this.moduleResolver;
     const userAuthQuery: UserAuthDomainQuery = {
-      botToken: resolver.getRealisation('botToken') as string,
+      botToken: resolver.resolve('botToken') as string,
       telegramAuthDTO: requestDod.attrs,
-      telegramAuthHashLifetimeLimitsAsSeconds: resolver.getRealisation('authHashLifeTime') as number,
+      telegramAuthHashLifetimeLimitsAsSeconds: resolver.resolve('authHashLifeTime') as number,
     };
     const jwtCreator = resolver.getServerResolver().getJwtCreator();
     return userAr.userAuthentification(userAuthQuery, jwtCreator);
