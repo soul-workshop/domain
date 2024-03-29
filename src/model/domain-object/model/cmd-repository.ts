@@ -9,6 +9,6 @@ export interface ModelCmdRepository {
 
 export const ModelCmdRepository = {
   instance(repoResolver: Repositoriable): ModelCmdRepository {
-    return repoResolver.getRepository(ModelCmdRepository) as ModelCmdRepository;
+    return repoResolver.resolveRepo(ModelCmdRepository) as ModelCmdRepository;
   },
 };
