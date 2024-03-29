@@ -9,6 +9,6 @@ export interface WorkshopReadRepository {
 
 export const WorkshopReadRepository = {
   instance(repoResolver: Repositoriable): WorkshopReadRepository {
-    return repoResolver.getRepository(WorkshopReadRepository) as WorkshopReadRepository;
+    return repoResolver.resolveRepo(WorkshopReadRepository) as WorkshopReadRepository;
   },
 };
