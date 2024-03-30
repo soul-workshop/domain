@@ -4,7 +4,6 @@ import { failure } from 'rilata/src/common/result/failure';
 import { dodUtility } from 'rilata/src/common/utils/domain-object/dod-utility';
 import { Result } from 'rilata/src/common/result/types';
 import { success } from 'rilata/src/common/result/success';
-import { AssertionException } from 'rilata/src/common/exeptions';
 import { Logger } from 'rilata/src/common/logger/logger';
 import { AggregateRootHelper } from 'rilata/src/domain/domain-object/aggregate-helper';
 import { DomainResult } from 'rilata/src/domain/domain-data/params-types';

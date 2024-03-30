@@ -27,20 +27,6 @@ describe('user authentification use case tests', () => {
 
   const sut = resolver.getModule();
 
-  // const findByTelegramIdMock = spyOn(
-  //   resolver.getRepository(UserCmdRepository),
-  //   'findByTelegramId',
-  // ).mockImplementation(
-  //   async (telegramId: TelegramId) => testUsersRecords
-  //     .filter((userRecord) => userRecord.telegramId === telegramId)
-  //     .map((userRecord) => {
-  //       const userAttrs = dtoUtility.excludeAttrs(userRecord, 'version');
-  //       return new UserAR(userAttrs, userRecord.version, resolver.getLogger());
-  //     }),
-  // );
-
-  //
-
   test('успех, возвращен сгенерированный токен для одного сотрудника', async () => {
     const oneUserFindedAuthQuery: TelegramAuthDTO = {
       auth_date: 1711625191,

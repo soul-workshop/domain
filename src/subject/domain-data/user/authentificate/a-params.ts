@@ -1,6 +1,6 @@
+import { TelegramId } from 'cy-core/src/types';
 import { ErrorDod } from 'rilata/src/domain/domain-data/domain-types';
 import { ActionParams, DomainResult } from 'rilata/src/domain/domain-data/params-types';
-import { TelegramId } from '../../../../types';
 
 export type TelegramAuthDTO = {
   id: TelegramId,
