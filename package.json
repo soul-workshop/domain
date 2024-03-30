@@ -1,6 +1,6 @@
 {
   "name": "cy-domain",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "GIS Expert",
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
   "description": "Предметный слой модуля субъектов ",
   "scripts": {
     "tslint": "bun tsc -noEmit",
-    "updates": "rm -rf node_modules/rilata node_modules/cy-core bun.lockb && bun update",
+    "updates": "rm -rf node_modules/rilata node_modules/cy-core bun.lockb && bun install",
     "lint": "bun eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "dependencies": {

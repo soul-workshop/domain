@@ -1,7 +1,7 @@
 import { UuidType } from 'rilata/src/common/types';
 import { DomainMeta } from 'rilata/src/domain/domain-data/domain-types';
 import { AggregateRootDataParams } from 'rilata/src/domain/domain-data/params-types';
-import { TelegramId } from '../../../types';
+import { TelegramId } from 'cy-core/src/types';
 import { UserAuthentificationActionParams } from './authentificate/a-params';
 
 export type UserProfile = {

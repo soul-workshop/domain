@@ -2,14 +2,16 @@ import {
   describe, expect, spyOn, test,
 } from 'bun:test';
 import { ConsoleLogger } from 'rilata/src/common/logger/console-logger';
-import { JwtCreatorImpl } from 'rilata/src/infra/jwt/jwt-creator';
-import { ServerResolver } from 'rilata/src/app/server/server-resolver';
-import { AuthJwtPayload } from 'cy-core/src/types';
-import { JwtDecoderImpl } from 'cy-core/src/infra/jwt/decoder';
 import { UserAR } from '../a-root';
 import { UserAuthDomainQuery } from '../../../domain-data/user/authentificate/a-params';
+import { DomainServerFixtures } from '../../../../fixtures';
+import { SubjectModule } from '../../../module';
 
-const telegramToken = '6698548206:AAHF49aVG7c-QkIbHQb-OBGwgkYdBRSmTCo';
+const server = DomainServerFixtures.getTestServer(['SubjectModule']);
+const serverResolver = server.getServerResolver();
+const decoder = serverResolver.getJwtDecoder();
+const moduleResolver = server.getModule<SubjectModule>('SubjectModule').getModuleResolver();
+const telegramToken = moduleResolver.resolve('botToken') as string;
 
 const authQuery = {
   id: 694528239,
@@ -28,32 +30,6 @@ const userAr = new UserAR({
     lastName: 'SuperPro',
   },
 }, 0, new ConsoleLogger());
-
-const decoder = new JwtDecoderImpl(0);
-const creator = new JwtCreatorImpl();
-const serverResolver = {
-  getJwtConfig() {
-    return {
-      algorithm: 'HS256',
-      jwtLifetimeAsHour: 24, // one day
-      jwtRefreshLifetimeAsHour: 24 * 3, // three days
-    };
-  },
-
-  getJwtSecretKey() {
-    return 'some-secret-key';
-  },
-
-  getJwtCreator() {
-    return creator;
-  },
-
-  getJwtDecoder() {
-    return decoder;
-  },
-} as unknown as ServerResolver<AuthJwtPayload>;
-decoder.init(serverResolver);
-creator.init(serverResolver);
 
 describe('тесты аутентификации пользователя', () => {
   const telegramAuthHashLifetimeLimitsAsSeconds = 10;
@@ -76,7 +52,7 @@ describe('тесты аутентификации пользователя', () 
     expect(userArDateMock).toHaveBeenCalledTimes(1);
     expect(decoderDateMock).toHaveBeenCalledTimes(1);
     expect(result.isSuccess()).toBe(true);
-    expect(result.value).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNDYyZjBjNi0yNWM0LTQ1YTMtYmNmNS03ZDI1ZDJhOWE4ZGYiLCJ0ZWxlZ3JhbUlkIjo2OTQ1MjgyMzksImV4cCI6MTY5ODc0MzE5OTAwMCwickV4cCI6MTY5ODkxNTk5OTAwMH0.KgqRfod5w0vAOeVFGiDNsZCmUVFvkeR-9OG51qWMI_k');
+    expect(result.value).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNDYyZjBjNi0yNWM0LTQ1YTMtYmNmNS03ZDI1ZDJhOWE4ZGYiLCJ0ZWxlZ3JhbUlkIjo2OTQ1MjgyMzksImV4cCI6MTY5ODc0MzE5OTAwMCwickV4cCI6MTY5ODkxNTk5OTAwMH0.Bj6PeKt0lPBi18jdZ7JAJvNN9LgFH888Q-tqIIOGbwo');
   });
 
   test('провал, время авторизации по данному токену прошло', () => {

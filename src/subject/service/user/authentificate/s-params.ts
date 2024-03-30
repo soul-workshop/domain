@@ -1,6 +1,6 @@
 import { ErrorDod, RequestDod } from 'rilata/src/domain/domain-data/domain-types';
 import { QueryServiceParams } from 'rilata/src/app/service/types';
-import { TelegramAuthDTO, UserAuthentificationActionParams } from '../../../domain-data/user/user-auth/a-params';
+import { TelegramAuthDTO, UserAuthentificationActionParams } from '../../../domain-data/user/authentificate/a-params';
 import { UserParams } from '../../../domain-data/user/params';
 
 export type UserAuthRequestDod = RequestDod<TelegramAuthDTO, 'userAuthentification'>
