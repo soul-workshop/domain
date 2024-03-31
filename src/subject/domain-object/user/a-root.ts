@@ -16,6 +16,8 @@ import {
   TelegramAuthDateNotValidError, TelegramHashNotValidError, UserAuthentificationActionParams,
   UserAuthDomainQuery,
 } from '../../domain-data/user/authentificate/a-params';
+import { UserRefreshActionParams, UserRefreshDomainQuery } from '../../domain-data/user/refresh/a-params';
+import { JwtVerifier } from 'rilata/src/app/jwt/jwt-verifier';
 
 export class UserAR extends AggregateRoot<UserParams> {
   constructor(
@@ -56,6 +58,22 @@ export class UserAR extends AggregateRoot<UserParams> {
     const access = tokenCreator.createToken(tokenData, 'access');
     const refresh = tokenCreator.createToken(tokenData, 'refresh');
     return success({ access, refresh });
+  }
+
+  refreshToken(
+    refreshQuery: UserRefreshDomainQuery,
+    tokenVerifier: JwtVerifier<AuthJwtPayload>,
+    tokenCreator: JwtCreator<AuthJwtPayload>,
+  ): DomainResult<UserRefreshActionParams> {
+    const verifyResult = tokenVerifier.verifyToken(refreshQuery.refreshToken);
+    if (verifyResult.isFailure()) return failure(verifyResult.value);
+
+    const tokenData: AuthJwtPayload = {
+      userId: this.attrs.userId,
+      telegramId: this.attrs.telegramId,
+    };
+
+    return success(tokenCreator.createToken(tokenData, 'access'));
   }
 
   private isValidHash(authQuery: UserAuthDomainQuery):
