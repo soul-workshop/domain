@@ -10,7 +10,6 @@ import { SubjectModule } from '../../../module';
 import { SubjectModuleFixtures } from '../../../fixtures';
 import { TelegramAuthDTO } from '../../../domain-data/user/authentificate/a-params';
 import { TelegramUserDoesNotExistError, UserAuthRequestDod } from './s-params';
-import { UserRepository } from '../../../domain-object/user/repo';
 
 describe('user authentification use case tests', () => {
   const server = DomainServerFixtures.getTestServer(['SubjectModule']);
@@ -18,7 +17,6 @@ describe('user authentification use case tests', () => {
 
   const anonymousCaller: AnonymousUser = { type: 'AnonymousUser' };
   const decoder = resolver.getJwtDecoder();
-  const userRepo = resolver.resolveRepo(UserRepository) as UserRepository;
 
   beforeEach(() => {
     const testDb = resolver.getDatabase() as TestDatabase;
@@ -52,7 +50,7 @@ describe('user authentification use case tests', () => {
     expect(result.isSuccess()).toBe(true);
     expect(getNowMock).toHaveBeenCalledTimes(1);
     expect(decoderGetNowMock).toHaveBeenCalledTimes(1);
-    expect(result.value).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZGM2YmZkYy1hZTQ0LTRlN2QtYTM1ZS1mMjZhMGU5MmZmZGQiLCJ0ZWxlZ3JhbUlkIjo1Mjk4NDg0MDIxLCJleHAiOjE3MTE3MTE1OTYwMDAsInJFeHAiOjE3MTE4ODQzOTYwMDB9.8VIcURLBiPeo8spNfMr7FdF8GCFhuxIg6wkuHbbakaY');
+    expect(result.value).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZGM2YmZkYy1hZTQ0LTRlN2QtYTM1ZS1mMjZhMGU5MmZmZGQiLCJ0ZWxlZ3JhbUlkIjo1Mjk4NDg0MDIxLCJleHAiOjE3MTE3MTE1OTYwMDAsInR5cCI6ImFjY2VzcyJ9.6Mhx46Is5EYtBojPCxsFCjJkvGU9Ke8KdR-mGvzSEZ8');
   });
 
   test('провал, случаи когда один сотрудник и один клиент', async () => {

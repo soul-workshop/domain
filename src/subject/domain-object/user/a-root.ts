@@ -5,7 +5,6 @@ import { dodUtility } from 'rilata/src/common/utils/domain-object/dod-utility';
 import { Result } from 'rilata/src/common/result/types';
 import { success } from 'rilata/src/common/result/success';
 import { Logger } from 'rilata/src/common/logger/logger';
-import { AggregateRootHelper } from 'rilata/src/domain/domain-object/aggregate-helper';
 import { DomainResult } from 'rilata/src/domain/domain-data/params-types';
 import { JwtCreator } from 'rilata/src/app/jwt/jwt-creator';
 import { AuthJwtPayload } from 'cy-core/src/types';
@@ -19,20 +18,12 @@ import {
 } from '../../domain-data/user/authentificate/a-params';
 
 export class UserAR extends AggregateRoot<UserParams> {
-  protected helper: AggregateRootHelper<UserParams>;
-
   constructor(
     protected attrs: UserAttrs,
     protected version: number,
     protected logger: Logger,
   ) {
-    super();
-    const result = userARValidator.validate(attrs);
-    if (result.isFailure()) {
-      const errStr = 'Не соблюдены инварианты UserAR';
-      throw this.logger.error(errStr, { attrs, result });
-    }
-    this.helper = new AggregateRootHelper('UserAR', attrs, 'userId', version, [], logger);
+    super(attrs, userARValidator, 'UserAR', 'userId', version, [], logger);
   }
 
   getTelegramId(): number {
@@ -62,7 +53,7 @@ export class UserAR extends AggregateRoot<UserParams> {
       telegramId: authQuery.telegramAuthDTO.id,
     };
 
-    const jwtTokens = tokenCreator.createToken(tokenData);
+    const jwtTokens = tokenCreator.createToken(tokenData, 'access');
     return success(jwtTokens);
   }
 

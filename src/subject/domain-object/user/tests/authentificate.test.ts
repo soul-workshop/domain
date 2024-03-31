@@ -52,7 +52,7 @@ describe('тесты аутентификации пользователя', () 
     expect(userArDateMock).toHaveBeenCalledTimes(1);
     expect(decoderDateMock).toHaveBeenCalledTimes(1);
     expect(result.isSuccess()).toBe(true);
-    expect(result.value).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNDYyZjBjNi0yNWM0LTQ1YTMtYmNmNS03ZDI1ZDJhOWE4ZGYiLCJ0ZWxlZ3JhbUlkIjo2OTQ1MjgyMzksImV4cCI6MTY5ODc0MzE5OTAwMCwickV4cCI6MTY5ODkxNTk5OTAwMH0.Bj6PeKt0lPBi18jdZ7JAJvNN9LgFH888Q-tqIIOGbwo');
+    expect(result.value).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNDYyZjBjNi0yNWM0LTQ1YTMtYmNmNS03ZDI1ZDJhOWE4ZGYiLCJ0ZWxlZ3JhbUlkIjo2OTQ1MjgyMzksImV4cCI6MTY5ODc0MzE5OTAwMCwidHlwIjoiYWNjZXNzIn0.eVm3IKi3S-1LtbldvJQyEu7DLVhwY3OfikqH5ORvm-c');
   });
 
   test('провал, время авторизации по данному токену прошло', () => {
