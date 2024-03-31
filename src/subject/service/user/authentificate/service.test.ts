@@ -8,8 +8,8 @@ import { UserAR } from '../../../domain-object/user/a-root';
 import { DomainServerFixtures } from '../../../../fixtures';
 import { SubjectModule } from '../../../module';
 import { SubjectModuleFixtures } from '../../../fixtures';
-import { TelegramAuthDTO } from '../../../domain-data/user/authentificate/a-params';
-import { TelegramUserDoesNotExistError, UserAuthRequestDod } from './s-params';
+import { TelegramAuthDTO, UserAuthDomainOut } from '../../../domain-data/user/authentificate/a-params';
+import { TelegramUserDoesNotExistError, UserAuthRequestDod, UserAuthentificationServiceParams } from './s-params';
 
 describe('user authentification use case tests', () => {
   const server = DomainServerFixtures.getTestServer(['SubjectModule']);
@@ -44,13 +44,21 @@ describe('user authentification use case tests', () => {
     };
     const getNowTimeAsMs = oneUserFindedAuthQuery.auth_date * 1000 + 5000;
     const getNowMock = spyOn(UserAR.prototype, 'getNow').mockReturnValueOnce(getNowTimeAsMs);
-    const decoderGetNowMock = spyOn(decoder, 'getNow').mockReturnValueOnce(getNowTimeAsMs);
+    const decoderGetNowMock = spyOn(decoder, 'getNow').mockReturnValue(getNowTimeAsMs);
 
-    const result = await sut.executeService(oneUserFindedRequestDod, anonymousCaller);
+    const result = await sut.executeService<UserAuthentificationServiceParams>(
+      oneUserFindedRequestDod,
+      anonymousCaller,
+    );
     expect(result.isSuccess()).toBe(true);
     expect(getNowMock).toHaveBeenCalledTimes(1);
-    expect(decoderGetNowMock).toHaveBeenCalledTimes(1);
-    expect(result.value).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZGM2YmZkYy1hZTQ0LTRlN2QtYTM1ZS1mMjZhMGU5MmZmZGQiLCJ0ZWxlZ3JhbUlkIjo1Mjk4NDg0MDIxLCJleHAiOjE3MTE3MTE1OTYwMDAsInR5cCI6ImFjY2VzcyJ9.6Mhx46Is5EYtBojPCxsFCjJkvGU9Ke8KdR-mGvzSEZ8');
+    expect(decoderGetNowMock).toHaveBeenCalledTimes(2);
+    expect(result.isSuccess()).toBe(true);
+    const jwtToken = result.value as UserAuthDomainOut;
+    expect(Object.keys(jwtToken)).toEqual(['access', 'refresh']);
+
+    expect(jwtToken.access).toEqual('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZGM2YmZkYy1hZTQ0LTRlN2QtYTM1ZS1mMjZhMGU5MmZmZGQiLCJ0ZWxlZ3JhbUlkIjo1Mjk4NDg0MDIxLCJleHAiOjE3MTE3MTE1OTYwMDAsInR5cCI6ImFjY2VzcyJ9.6Mhx46Is5EYtBojPCxsFCjJkvGU9Ke8KdR-mGvzSEZ8');
+    expect(jwtToken.refresh).toEqual('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZGM2YmZkYy1hZTQ0LTRlN2QtYTM1ZS1mMjZhMGU5MmZmZGQiLCJ0ZWxlZ3JhbUlkIjo1Mjk4NDg0MDIxLCJleHAiOjE3MTE4ODQzOTYwMDAsInR5cCI6InJlZnJlc2gifQ.s2KplF_k7dylUfGXlJp6NagAxWYaAT-PS12l-JlrpTU');
   });
 
   test('провал, случаи когда один сотрудник и один клиент', async () => {

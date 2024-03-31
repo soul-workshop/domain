@@ -18,7 +18,7 @@ export type UserAuthDomainQuery = {
   telegramAuthHashLifetimeLimitsAsSeconds: number,
 }
 
-export type UserAuthOut = {
+export type UserAuthDomainOut = {
   access: string,
   refresh: string,
 }
@@ -41,7 +41,7 @@ export type TelegramAuthDateNotValidError = ErrorDod<'TelegramAuthDateNotValidEr
 
 export type UserAuthentificationActionParams = ActionParams<
   UserAuthDomainQuery,
-  UserAuthOut,
+  UserAuthDomainOut,
   TelegramAuthDateNotValidError | TelegramHashNotValidError,
   never
 >
