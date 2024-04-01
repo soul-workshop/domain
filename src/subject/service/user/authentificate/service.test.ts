@@ -53,7 +53,6 @@ describe('user authentification use case tests', () => {
     expect(result.isSuccess()).toBe(true);
     expect(getNowMock).toHaveBeenCalledTimes(1);
     expect(decoderGetNowMock).toHaveBeenCalledTimes(2);
-    expect(result.isSuccess()).toBe(true);
     const jwtToken = result.value as UserAuthDomainOut;
     expect(Object.keys(jwtToken)).toEqual(['access', 'refresh']);
 

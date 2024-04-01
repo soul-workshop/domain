@@ -1,14 +1,13 @@
 import { Repositoriable } from 'rilata/src/app/resolves/repositoriable';
-import { UserId } from 'rilata/src/common/types';
+import { UuidType } from 'rilata/src/common/types';
 import { Result } from 'rilata/src/common/result/types';
 import { WorkshopAttrs } from '../domain-data/params';
 import { WorkshopForUserDoesntExistError } from '../domain-data/repo-erros';
-import { WorkshoModuleResolver } from '../resolver';
+import { WorkshopModuleResolver } from '../resolver';
 
 export interface WorkshopRepository {
-  init(resolver: WorkshoModuleResolver): void
-  getWorshop(userId:UserId): Promise<Result<WorkshopForUserDoesntExistError, WorkshopAttrs>>;
-  findById(workshopId: WorkshopAttrs['workshopId']): Promise<WorkshopAttrs | undefined>
+  init(resolver: WorkshopModuleResolver): void
+  getWorkshop(id: UuidType): Promise<Result<WorkshopForUserDoesntExistError, WorkshopAttrs>>;
 }
 
 export const WorkshopRepository = {
