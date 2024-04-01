@@ -1,8 +1,3 @@
-/** Файл для определения типов для всех доменных модулей */
+import { SubjectModule } from './subject/module';
 
-export type Location = {
-  latitude: number,
-  longitude: number,
-}
-
-export type TelegramId = number;
+export type CraftyardServerModules = SubjectModule;

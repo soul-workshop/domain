@@ -14,6 +14,6 @@ export interface UserReadRepository {
 
 export const UserReadRepository = {
   instance(repoResolver: Repositoriable): UserReadRepository {
-    return repoResolver.getRepository(UserReadRepository) as UserReadRepository;
+    return repoResolver.resolveRepo(UserReadRepository) as UserReadRepository;
   },
 };
