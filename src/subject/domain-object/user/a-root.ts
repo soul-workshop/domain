@@ -7,6 +7,7 @@ import { success } from 'rilata/src/common/result/success';
 import { Logger } from 'rilata/src/common/logger/logger';
 import { DomainResult } from 'rilata/src/domain/domain-data/params-types';
 import { JwtCreator } from 'rilata/src/app/jwt/jwt-creator';
+import { JwtVerifier } from 'rilata/src/app/jwt/jwt-verifier';
 import { AuthJwtPayload } from 'cy-core/src/types';
 import {
   UserAttrs, UserParams, UserType,
@@ -16,6 +17,7 @@ import {
   TelegramAuthDateNotValidError, TelegramHashNotValidError, UserAuthentificationActionParams,
   UserAuthDomainQuery,
 } from '../../domain-data/user/authentificate/a-params';
+import { UserRefreshActionParams, UserRefreshDomainQuery } from '../../domain-data/user/refresh/a-params';
 
 export class UserAR extends AggregateRoot<UserParams> {
   constructor(
@@ -56,6 +58,22 @@ export class UserAR extends AggregateRoot<UserParams> {
     const access = tokenCreator.createToken(tokenData, 'access');
     const refresh = tokenCreator.createToken(tokenData, 'refresh');
     return success({ access, refresh });
+  }
+
+  refreshToken(
+    refreshQuery: UserRefreshDomainQuery,
+    tokenVerifier: JwtVerifier<AuthJwtPayload>,
+    tokenCreator: JwtCreator<AuthJwtPayload>,
+  ): DomainResult<UserRefreshActionParams> {
+    const verifyResult = tokenVerifier.verifyToken(refreshQuery.refreshToken);
+    if (verifyResult.isFailure()) return failure(verifyResult.value);
+
+    const tokenData: AuthJwtPayload = {
+      userId: this.attrs.userId,
+      telegramId: this.attrs.telegramId,
+    };
+
+    return success(tokenCreator.createToken(tokenData, 'access'));
   }
 
   private isValidHash(authQuery: UserAuthDomainQuery):

@@ -1,6 +1,6 @@
 import { TelegramId } from 'cy-core/src/types';
-import { ErrorDod } from 'rilata/src/domain/domain-data/domain-types';
 import { ActionParams, DomainResult } from 'rilata/src/domain/domain-data/params-types';
+import { TelegramAuthDateNotValidError, TelegramHashNotValidError } from '../aggregate-errors';
 
 export type TelegramAuthDTO = {
   id: TelegramId,
@@ -22,22 +22,6 @@ export type UserAuthDomainOut = {
   access: string,
   refresh: string,
 }
-
-type TelegramHashNotValidLocale = {
-    text: 'Хэш телеграмма некорректный',
-    hint:{ hash: string },
-    name: 'TelegramHashNotValidError'
-}
-
-export type TelegramHashNotValidError = ErrorDod<'TelegramHashNotValidError', TelegramHashNotValidLocale>
-
-type TelegramAuthDateNotValidLocale = {
-    text: 'Прошло больше {{authHashLifetimeAsSeconds}} секунд после получения кода авторизации в телеграм. Повторите процедуру авторизации еще раз.',
-    hint:{ authHashLifetimeAsSeconds: number },
-    name: 'TelegramAuthDateNotValidError'
-}
-
-export type TelegramAuthDateNotValidError = ErrorDod<'TelegramAuthDateNotValidError', TelegramAuthDateNotValidLocale>
 
 export type UserAuthentificationActionParams = ActionParams<
   UserAuthDomainQuery,

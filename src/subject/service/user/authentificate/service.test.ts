@@ -9,7 +9,8 @@ import { DomainServerFixtures } from '../../../../fixtures';
 import { SubjectModule } from '../../../module';
 import { SubjectModuleFixtures } from '../../../fixtures';
 import { TelegramAuthDTO, UserAuthDomainOut } from '../../../domain-data/user/authentificate/a-params';
-import { TelegramUserDoesNotExistError, UserAuthRequestDod, UserAuthentificationServiceParams } from './s-params';
+import { UserAuthRequestDod, UserAuthentificationServiceParams } from './s-params';
+import { UserByTelegramIdDoesNotExistError } from '../../../domain-data/user/repo-errors';
 
 describe('user authentification use case tests', () => {
   const server = DomainServerFixtures.getTestServer(['SubjectModule']);
@@ -99,15 +100,15 @@ describe('user authentification use case tests', () => {
 
     const result = await sut.executeService(userNotFoundRequestDod, anonymousCaller);
     expect(result.isFailure()).toBe(true);
-    expect(result.value as TelegramUserDoesNotExistError).toEqual({
+    expect(result.value as UserByTelegramIdDoesNotExistError).toEqual({
       locale: {
         text: 'У вас нет аккаунта.',
         hint: {
           telegramId: 111222334,
         },
-        name: 'TelegramUserDoesNotExistError',
+        name: 'UserByTelegramIdDoesNotExistError',
       },
-      name: 'TelegramUserDoesNotExistError',
+      name: 'UserByTelegramIdDoesNotExistError',
       meta: {
         errorType: 'domain-error',
         domainType: 'error',
