@@ -3,8 +3,8 @@ import { UserId } from 'rilata/src/common/types';
 import { Result } from 'rilata/src/common/result/types';
 import { TelegramId } from 'cy-core/src/types';
 import { UserAR } from './a-root';
-import { UserDoesNotExistError } from './repo-errors';
 import { SubjectModuleResolver } from '../../resolver';
+import { UserDoesNotExistError } from '../../domain-data/user/repo-errors';
 
 export interface UserRepository {
   init(resolver: SubjectModuleResolver): void

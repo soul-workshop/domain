@@ -2,10 +2,11 @@ import { QueryService } from 'rilata/src/app/service/query-service';
 import { ServiceResult } from 'rilata/src/app/service/types';
 import { dodUtility } from 'rilata/src/common/utils/domain-object/dod-utility';
 import { failure } from 'rilata/src/common/result/failure';
-import { TelegramUserDoesNotExistError, UserAuthRequestDod, UserAuthentificationServiceParams } from './s-params';
+import { UserAuthRequestDod, UserAuthentificationServiceParams } from './s-params';
 import { userAuthentificationValidator } from './v-map';
 import { UserRepository } from '../../../domain-object/user/repo';
 import { UserAuthDomainQuery } from '../../../domain-data/user/authentificate/a-params';
+import { UserByTelegramIdDoesNotExistError } from '../../../domain-data/user/repo-errors';
 
 export class UserAuthentificationService extends QueryService<UserAuthentificationServiceParams> {
   serviceName: 'userAuthentification' = 'userAuthentification' as const;
@@ -26,8 +27,8 @@ export class UserAuthentificationService extends QueryService<UserAuthentificati
     if (users.length > 1) {
       throw this.logger.error('Несколько аккаунтов с одним telegramId', { telegramId: requestDod.attrs.id });
     } if (users.length === 0) {
-      const err = dodUtility.getDomainError<TelegramUserDoesNotExistError>(
-        'TelegramUserDoesNotExistError',
+      const err = dodUtility.getDomainError<UserByTelegramIdDoesNotExistError>(
+        'UserByTelegramIdDoesNotExistError',
         'У вас нет аккаунта.',
         { telegramId },
       );

@@ -7,6 +7,7 @@ import { success } from 'rilata/src/common/result/success';
 import { Logger } from 'rilata/src/common/logger/logger';
 import { DomainResult } from 'rilata/src/domain/domain-data/params-types';
 import { JwtCreator } from 'rilata/src/app/jwt/jwt-creator';
+import { JwtVerifier } from 'rilata/src/app/jwt/jwt-verifier';
 import { AuthJwtPayload } from 'cy-core/src/types';
 import {
   UserAttrs, UserParams, UserType,
@@ -17,7 +18,6 @@ import {
   UserAuthDomainQuery,
 } from '../../domain-data/user/authentificate/a-params';
 import { UserRefreshActionParams, UserRefreshDomainQuery } from '../../domain-data/user/refresh/a-params';
-import { JwtVerifier } from 'rilata/src/app/jwt/jwt-verifier';
 
 export class UserAR extends AggregateRoot<UserParams> {
   constructor(
