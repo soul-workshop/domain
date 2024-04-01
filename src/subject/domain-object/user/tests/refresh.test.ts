@@ -3,6 +3,7 @@ import {
 } from 'bun:test';
 import { ConsoleLogger } from 'rilata/src/common/logger/console-logger';
 import { TokenExpiredError } from 'rilata/src/app/jwt/jwt-errors';
+import { JwtTokens } from 'cy-core/src/types';
 import { UserAR } from '../a-root';
 import { DomainServerFixtures } from '../../../../fixtures';
 import { UserRefreshDomainQuery } from '../../../domain-data/user/refresh/a-params';
@@ -35,9 +36,13 @@ describe('тесты обновления (refresh) токена пользов�
     const tokenCreator = serverResolver.getJwtCreator();
 
     const result = userAr.refreshToken(validRefreshQuery, tokenVerifier, tokenCreator);
-    expect(decoderDateMock).toHaveBeenCalledTimes(2);
     expect(result.isSuccess()).toBe(true);
-    expect(result.value).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNDYyZjBjNi0yNWM0LTQ1YTMtYmNmNS03ZDI1ZDJhOWE4ZGYiLCJ0ZWxlZ3JhbUlkIjo2OTQ1MjgyMzksImV4cCI6MTU3NzkyMzE5NzAwMCwidHlwIjoiYWNjZXNzIn0.4brZcscEczsUQ1eRvaY1aziuHjCXKTBiBVkSG4P-vpo');
+
+    const tokens = result.value as JwtTokens;
+    expect(Object.keys(tokens).length).toBe(2);
+    expect(tokens.access).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNDYyZjBjNi0yNWM0LTQ1YTMtYmNmNS03ZDI1ZDJhOWE4ZGYiLCJ0ZWxlZ3JhbUlkIjo2OTQ1MjgyMzksImV4cCI6MTU3NzkyMzE5NzAwMCwidHlwIjoiYWNjZXNzIn0.4brZcscEczsUQ1eRvaY1aziuHjCXKTBiBVkSG4P-vpo');
+    expect(tokens.refresh).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNDYyZjBjNi0yNWM0LTQ1YTMtYmNmNS03ZDI1ZDJhOWE4ZGYiLCJ0ZWxlZ3JhbUlkIjo2OTQ1MjgyMzksImV4cCI6MTU3ODA5NTk5NzAwMCwidHlwIjoicmVmcmVzaCJ9.VQ3pL6bx2c-G8ySK5up-lyt2T-BJHNHjzF8hqVFiO24');
+    expect(decoderDateMock).toHaveBeenCalledTimes(3); // verify, create access, create refresh
   });
 
   test('провал, время рефреш токена истекло', () => {

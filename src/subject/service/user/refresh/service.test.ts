@@ -4,6 +4,7 @@ import {
 import { DomainUser } from 'rilata/src/app/caller';
 import { TestDatabase } from 'rilata/src/app/database/test-database';
 import { JwtVerifyError } from 'rilata/src/app/jwt/jwt-errors';
+import { JwtTokens } from 'cy-core/src/types';
 import { DomainServerFixtures } from '../../../../fixtures';
 import { SubjectModule } from '../../../module';
 import { SubjectModuleFixtures } from '../../../fixtures';
@@ -38,13 +39,16 @@ describe('refresh token service tests', () => {
       },
       attrs: { refreshToken },
     };
-    const getNowMock = spyOn(decoder, 'getNow').mockReturnValue(nowTime);
+    const decoderDateMock = spyOn(decoder, 'getNow').mockReturnValue(nowTime);
 
     const result = await sut.executeService<RefreshTokenServiceParams>(requestDod, caller);
     expect(result.isSuccess()).toBe(true);
-    const expectAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZGM2YmZkYy1hZTQ0LTRlN2QtYTM1ZS1mMjZhMGU5MmZmZGQiLCJ0ZWxlZ3JhbUlkIjo1Mjk4NDg0MDIxLCJleHAiOjE3MDQxNTM1NTAwMDAsInR5cCI6ImFjY2VzcyJ9.9GGxJR8ORvzGd2i-Gw1Z2hHkpnlG2iMktkJUrINe2Zw';
-    expect(result.value).toBe(expectAccessToken);
-    expect(getNowMock).toHaveBeenCalledTimes(2);
+
+    const tokens = result.value as JwtTokens;
+    expect(Object.keys(tokens).length).toBe(2);
+    expect(tokens.access).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZGM2YmZkYy1hZTQ0LTRlN2QtYTM1ZS1mMjZhMGU5MmZmZGQiLCJ0ZWxlZ3JhbUlkIjo1Mjk4NDg0MDIxLCJleHAiOjE3MDQxNTM1NTAwMDAsInR5cCI6ImFjY2VzcyJ9.9GGxJR8ORvzGd2i-Gw1Z2hHkpnlG2iMktkJUrINe2Zw');
+    expect(tokens.refresh).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZGM2YmZkYy1hZTQ0LTRlN2QtYTM1ZS1mMjZhMGU5MmZmZGQiLCJ0ZWxlZ3JhbUlkIjo1Mjk4NDg0MDIxLCJleHAiOjE3MDQzMjYzNTAwMDAsInR5cCI6InJlZnJlc2gifQ.MH1ite8_dGlzWibBzPTa_l8UKGmn_Q7FhwOP9YiaLgc');
+    expect(decoderDateMock).toHaveBeenCalledTimes(3); // verify, create access, create refresh
   });
 
   test('провал, ошибка верификации токена', async () => {

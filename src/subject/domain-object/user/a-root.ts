@@ -8,16 +8,17 @@ import { Logger } from 'rilata/src/common/logger/logger';
 import { DomainResult } from 'rilata/src/domain/domain-data/params-types';
 import { JwtCreator } from 'rilata/src/app/jwt/jwt-creator';
 import { JwtVerifier } from 'rilata/src/app/jwt/jwt-verifier';
-import { AuthJwtPayload } from 'cy-core/src/types';
+import { AuthJwtPayload, JwtTokens } from 'cy-core/src/types';
 import {
   UserAttrs, UserParams, UserType,
 } from '../../domain-data/user/params';
 import { userARValidator } from '../../domain-data/user/v-map';
 import {
-  TelegramAuthDateNotValidError, TelegramHashNotValidError, UserAuthentificationActionParams,
+  UserAuthentificationActionParams,
   UserAuthDomainQuery,
 } from '../../domain-data/user/authentificate/a-params';
 import { UserRefreshActionParams, UserRefreshDomainQuery } from '../../domain-data/user/refresh/a-params';
+import { TelegramAuthDateNotValidError, TelegramHashNotValidError } from '../../domain-data/user/aggregate-errors';
 
 export class UserAR extends AggregateRoot<UserParams> {
   constructor(
@@ -50,14 +51,7 @@ export class UserAR extends AggregateRoot<UserParams> {
       return failure(result.value);
     }
 
-    const tokenData: AuthJwtPayload = {
-      userId: this.attrs.userId,
-      telegramId: authQuery.telegramAuthDTO.id,
-    };
-
-    const access = tokenCreator.createToken(tokenData, 'access');
-    const refresh = tokenCreator.createToken(tokenData, 'refresh');
-    return success({ access, refresh });
+    return this.createTokens(tokenCreator);
   }
 
   refreshToken(
@@ -68,12 +62,7 @@ export class UserAR extends AggregateRoot<UserParams> {
     const verifyResult = tokenVerifier.verifyToken(refreshQuery.refreshToken);
     if (verifyResult.isFailure()) return failure(verifyResult.value);
 
-    const tokenData: AuthJwtPayload = {
-      userId: this.attrs.userId,
-      telegramId: this.attrs.telegramId,
-    };
-
-    return success(tokenCreator.createToken(tokenData, 'access'));
+    return this.createTokens(tokenCreator);
   }
 
   private isValidHash(authQuery: UserAuthDomainQuery):
@@ -106,6 +95,17 @@ export class UserAR extends AggregateRoot<UserParams> {
       ));
     }
     return success(true);
+  }
+
+  protected createTokens(tokenCreator: JwtCreator<AuthJwtPayload>): Result<never, JwtTokens> {
+    const tokenData: AuthJwtPayload = {
+      userId: this.attrs.userId,
+      telegramId: this.attrs.telegramId,
+    };
+
+    const access = tokenCreator.createToken(tokenData, 'access');
+    const refresh = tokenCreator.createToken(tokenData, 'refresh');
+    return success({ access, refresh });
   }
 
   getNow(): number {
