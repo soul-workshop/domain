@@ -8,7 +8,7 @@ import { UserRepository } from '../../../domain-object/user/repo';
 import { UserAuthDomainQuery } from '../../../domain-data/user/authentificate/a-params';
 import { UserByTelegramIdDoesNotExistError } from '../../../domain-data/user/repo-errors';
 
-export class UserAuthentificationService extends QueryService<UserAuthentificationServiceParams> {
+export class AuthentificatingUserService extends QueryService<UserAuthentificationServiceParams> {
   serviceName: 'userAuthentification' = 'userAuthentification' as const;
 
   aRootName = 'UserAR' as const;

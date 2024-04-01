@@ -14,17 +14,16 @@ import { UserByTelegramIdDoesNotExistError } from '../../../domain-data/user/rep
 
 describe('user authentification use case tests', () => {
   const server = DomainServerFixtures.getTestServer(['SubjectModule']);
-  const resolver = server.getModule<SubjectModule>('SubjectModule').getModuleResolver();
+  const sut = server.getModule<SubjectModule>('SubjectModule');
+  const resolver = sut.getModuleResolver();
+  const decoder = resolver.getJwtDecoder();
 
   const anonymousCaller: AnonymousUser = { type: 'AnonymousUser' };
-  const decoder = resolver.getJwtDecoder();
 
   beforeEach(() => {
     const testDb = resolver.getDatabase() as TestDatabase;
     testDb.addBatch(SubjectModuleFixtures.subjectRepoFixtures);
   });
-
-  const sut = resolver.getModule();
 
   test('успех, возвращен сгенерированный токен для одного сотрудника', async () => {
     const oneUserFindedAuthQuery: TelegramAuthDTO = {
