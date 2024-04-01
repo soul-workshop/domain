@@ -4,7 +4,7 @@ import { ModuleResolveInstance } from 'rilata/src/app/resolves/types';
 import { WorkshopModule } from './module';
 import { WorkshopModuleResolves } from './resolves';
 
-export class WorkshoModuleResolver extends ModuleResolver<
+export class WorkshopModuleResolver extends ModuleResolver<
 AuthJwtPayload, WorkshopModule, WorkshopModuleResolves> {
   resolve(...args: unknown[]): unknown {
     throw new Error('Method not implemented.');

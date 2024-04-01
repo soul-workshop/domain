@@ -6,3 +6,8 @@ export type WorkshopModuleResolves = ModuleResolves<WorkshopModule> & {
   moduleUrl: '/api/model-module/',
  workshopRepo: WorkshopRepository;
 }
+
+export const workshopModuleResolves: Pick<WorkshopModuleResolves, 'moduleUrl' | 'moduleName'> = {
+  moduleUrl: '/api/model-module/',
+  moduleName: 'WorkshopModule',
+};

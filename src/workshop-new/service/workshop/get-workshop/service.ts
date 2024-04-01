@@ -20,7 +20,7 @@ export class GettingWorkshopService extends QueryService<GettingWorkshopServiceP
   ): Promise<ServiceResult<GettingWorkshopServiceParams>> {
     const repo = WorkshopRepository.instance(this.moduleResolver);
     const repoResult = await repo
-      .getWorshop(requestDod.attrs.workshopId);
+      .getWorkshop(requestDod.attrs.workshopId);
     if (repoResult.isFailure()) return failure(repoResult.value);
     return success(repoResult.value);
   }

@@ -1,7 +1,8 @@
 import { Location } from 'cy-core/src/types';
-import { UserId, UuidType } from 'rilata/src/common/types';
+import { UuidType } from 'rilata/src/common/types';
 import { DomainMeta } from 'rilata/src/domain/domain-data/domain-types';
 import { AggregateRootDataParams } from 'rilata/src/domain/domain-data/params-types';
+import { GroupRoleAttrs } from 'rilata/src/domain/domain-object/types';
 
 export type WorkshopAttrs = {
   workshopId: UuidType,
@@ -9,7 +10,7 @@ export type WorkshopAttrs = {
   city: string,
   address: string,
   location: Location,
-  employeesRole: UserId[]
+  employeesRole: GroupRoleAttrs
 }
 
 export type WorkshopMeta = DomainMeta<'WorkshopAR', 'workshopId'>;
