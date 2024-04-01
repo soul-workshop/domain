@@ -19,6 +19,6 @@ export interface ModelFacade {
 
 export const ModelFacade = {
   instance(resolver: Facadable): ModelFacade {
-    return resolver.getFacade(ModelFacade) as ModelFacade;
+    return resolver.resolveFacade(ModelFacade) as ModelFacade;
   },
 };
