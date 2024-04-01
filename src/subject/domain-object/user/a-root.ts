@@ -53,8 +53,9 @@ export class UserAR extends AggregateRoot<UserParams> {
       telegramId: authQuery.telegramAuthDTO.id,
     };
 
-    const jwtTokens = tokenCreator.createToken(tokenData, 'access');
-    return success(jwtTokens);
+    const access = tokenCreator.createToken(tokenData, 'access');
+    const refresh = tokenCreator.createToken(tokenData, 'refresh');
+    return success({ access, refresh });
   }
 
   private isValidHash(authQuery: UserAuthDomainQuery):

@@ -1,11 +1,11 @@
 import { ErrorDod, RequestDod } from 'rilata/src/domain/domain-data/domain-types';
 import { QueryServiceParams } from 'rilata/src/app/service/types';
-import { TelegramAuthDTO, UserAuthentificationActionParams } from '../../../domain-data/user/authentificate/a-params';
+import { TelegramAuthDTO, UserAuthDomainOut, UserAuthentificationActionParams } from '../../../domain-data/user/authentificate/a-params';
 import { UserParams } from '../../../domain-data/user/params';
 
 export type UserAuthRequestDod = RequestDod<TelegramAuthDTO, 'userAuthentification'>
 
-export type UserAuthentificationOut = string;
+export type UserAuthServiceOut = UserAuthDomainOut;
 
 type TelegramUserDoesNotExistLocale = {
   text: 'У вас нет аккаунта.',
@@ -22,5 +22,5 @@ export type UserAuthentificationErrors =
   | UserAuthentificationActionParams['errors'];
 
 export type UserAuthentificationServiceParams = QueryServiceParams<
-  UserParams, UserAuthRequestDod, UserAuthentificationOut, UserAuthentificationErrors
+  UserParams, UserAuthRequestDod, UserAuthServiceOut, UserAuthentificationErrors
 >
