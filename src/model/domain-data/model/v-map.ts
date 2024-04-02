@@ -10,7 +10,7 @@ export const modelAttrsVMap: ValidatorMap<ModelAttrs> = {
   workshopId: new UuidField('workshopId'),
   modelId: new UuidField('modelId'),
   name: new LiteralFieldValidator('name', true, { isArray: false }, 'string', [
-    new MaxCharsCountValidationRule(50),
+    new MaxCharsCountValidationRule(60),
   ]),
   category: new LiteralFieldValidator('category', true, { isArray: false }, 'string', [
     new StringChoiceValidationRule(['Мебель', 'Кухонная утварь', 'Игрушки']),

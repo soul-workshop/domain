@@ -1,23 +1,34 @@
 import { AggregateRoot } from 'rilata/src/domain/domain-object/aggregate-root';
 import { AggregateRootHelper } from 'rilata/src/domain/domain-object/aggregate-helper';
 import { Logger } from 'rilata/src/common/logger/logger';
-import { ModelAttrs, ModelParams } from '../../domain-data/params';
-import { modelAttrsDtoVMap } from '../../domain-data/v-map';
+import { DtoFieldValidator } from 'rilata/src/domain/validator/field-validator/dto-field-validator';
+import { ModelAttrs, ModelParams } from '../../domain-data/model/params';
+import { modelAttrsVMap } from '../../domain-data/model/v-map';
 
 export class ModelAR extends AggregateRoot<ModelParams> {
+  protected attrs: ModelAttrs;
+
   protected helper: AggregateRootHelper<ModelParams>;
 
-  constructor(
-    protected attrs: ModelAttrs,
-    protected version: number,
-    protected logger: Logger,
-  ) {
+  protected logger: Logger;
+
+  constructor(attrs: ModelAttrs, version: number, logger: Logger) {
     super();
-    const result = modelAttrsDtoVMap.validate(attrs);
-    if (result.isFailure()) {
-      throw this.logger.error('Не соблюдены инварианты ModelAR', { attrs, result });
+    this.checkInveriants(attrs);
+    this.logger = logger;
+    this.attrs = attrs;
+    this.helper = new AggregateRootHelper<ModelParams>('ModelAR', attrs, 'modelId', version, [], logger);
+  }
+
+  protected checkInveriants(attrs: ModelAttrs): void {
+    const invariantValidator = new DtoFieldValidator('modelInvariants', true, { isArray: false }, 'dto', modelAttrsVMap);
+    const invariantsResult = invariantValidator.validate(attrs);
+    if (invariantsResult.isFailure()) {
+      throw this.logger.error('не соблюдены инварианты агрегата Model', {
+        modelAttrs: attrs,
+        validatorValue: invariantsResult.value,
+      });
     }
-    this.helper = new AggregateRootHelper('ModelAR', attrs, version, [], logger);
   }
 
   getId(): string {
