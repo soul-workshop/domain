@@ -1,4 +1,4 @@
-import { TelegramId } from 'cy-core/src/types';
+import { JwtTokens, TelegramId } from 'cy-core/src/types';
 import { ActionParams, DomainResult } from 'rilata/src/domain/domain-data/params-types';
 import { TelegramAuthDateNotValidError, TelegramHashNotValidError } from '../aggregate-errors';
 
@@ -18,10 +18,7 @@ export type UserAuthDomainQuery = {
   telegramAuthHashLifetimeLimitsAsSeconds: number,
 }
 
-export type UserAuthDomainOut = {
-  access: string,
-  refresh: string,
-}
+export type UserAuthDomainOut = JwtTokens
 
 export type UserAuthentificationActionParams = ActionParams<
   UserAuthDomainQuery,

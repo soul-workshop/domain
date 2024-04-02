@@ -13,8 +13,8 @@ import { UserAttrs } from './domain-data/user/params';
 import { SubjectModuleResolver } from './resolver';
 import { UserAR } from './domain-object/user/a-root';
 import { SubjectModuleResolves, subjectModuleResolves } from './resolves';
-import { UserDoesNotExistError } from './domain-object/user/repo-errors';
 import { UserFactory } from './domain-object/user/factory';
+import { UserDoesNotExistError } from './domain-data/user/repo-errors';
 
 export namespace SubjectModuleFixtures {
   type UserRecord = UserAttrs & { version: number };
