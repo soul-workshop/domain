@@ -6,12 +6,12 @@ import { failure } from 'rilata/src/common/result/failure';
 import { dodUtility } from 'rilata/src/common/utils/domain-object/dod-utility';
 import { dtoUtility } from 'rilata/src/common/utils/dto';
 import { success } from 'rilata/src/common/result/success';
+import { TestBatchRecords } from 'rilata/src/app/database/types';
 import { WorkshopAttrs } from './domain-data/params';
-import { WorkshopForUserDoesntExistError } from './domain-data/repo-erros';
+import { WorkshopDoesntExistError } from './domain-data/repo-erros';
 import { WorkshopRepository } from './domain-object/repo';
 import { WorkshopModuleResolver } from './resolver';
 import { WorkshopModuleResolves, workshopModuleResolves } from './resolves';
-import { TestBatchRecords } from 'rilata/src/app/database/types';
 
 export namespace WorkshopModuleFixtures {
   type WorkshopRecord = WorkshopAttrs & { version: number }
@@ -35,11 +35,11 @@ export namespace WorkshopModuleFixtures {
     }
 
     // eslint-disable-next-line max-len
-    async getWorkshop(id: UuidType): Promise<Result<WorkshopForUserDoesntExistError, WorkshopAttrs>> {
+    async getWorkshop(id: UuidType): Promise<Result<WorkshopDoesntExistError, WorkshopAttrs>> {
       const workshop = await this.testRepo.find(id);
       if (!workshop) {
-        return failure(dodUtility.getDomainError<WorkshopForUserDoesntExistError>(
-          'WorkshopForUserDoesntExistError',
+        return failure(dodUtility.getDomainError<WorkshopDoesntExistError>(
+          'WorkshopDoesntExistError',
           'Мастерская не найдена',
           {},
         ));

@@ -2,7 +2,7 @@ import { UuidType } from 'rilata/src/common/types';
 import { QueryServiceParams } from 'rilata/src/app/service/types';
 import { OutputAggregateDataTransfer } from 'rilata/src/domain/domain-data/domain-types';
 import { WorkshopAttrs, WorkshopParams } from '../../../domain-data/params';
-import { WorkshopForUserDoesntExistError } from '../../../domain-data/repo-erros';
+import { WorkshopDoesntExistError } from '../../../domain-data/repo-erros';
 
 export type getWorkshopRequesttDod = {
     meta: {
@@ -21,7 +21,7 @@ export type GettingWorkshopServiceParams = QueryServiceParams<
   WorkshopParams,
   getWorkshopRequesttDod,
   GetWorkshopModelOut,
-  WorkshopForUserDoesntExistError
+  WorkshopDoesntExistError
 >
 
 export type WorkshopRDT = OutputAggregateDataTransfer<WorkshopParams>;

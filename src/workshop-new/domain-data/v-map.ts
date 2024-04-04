@@ -7,6 +7,7 @@ import { UuidField } from 'rilata/src/domain/validator/field-validator/prepared-
 import { MaxCharsCountValidationRule } from 'rilata/src/domain/validator/rules/validate-rules/string/max-chars-count.v-rule';
 import { OnlyDashAndLitinicOrCyrillicCharsValidationRule } from 'rilata/src/domain/validator/rules/validate-rules/string/only-dash-and-latinic-or-cyrillic-chars.v-rule';
 import { DtoFieldValidator } from 'rilata/src/domain/validator/field-validator/dto-field-validator';
+import { GroupRoleAttrs } from 'rilata/src/domain/domain-object/types';
 import { WorkshopAttrs } from './params';
 
 const locationAttrsValidatorMap: ValidatorMap<Location> = {
@@ -28,6 +29,15 @@ const locationAttrsValidatorMap: ValidatorMap<Location> = {
   ),
 };
 
+const employeesRoleValidatorMap:ValidatorMap<GroupRoleAttrs> = {
+  userIds: new LiteralFieldValidator(
+    'userIds',
+    true,
+    { isArray: true, mustBeFilled: true },
+    'string',
+    [new UUIDFormatValidationRule()],
+  ),
+};
 export const workshopAttrsVMap: ValidatorMap<WorkshopAttrs> = {
   workshopId: new UuidField('workshopId'),
   name: new LiteralFieldValidator('name', true, { isArray: false }, 'string', [
@@ -40,6 +50,6 @@ export const workshopAttrsVMap: ValidatorMap<WorkshopAttrs> = {
   ]),
   address: new LiteralFieldValidator('address', true, { isArray: false }, 'string', [new MaxCharsCountValidationRule(250)]),
   location: new DtoFieldValidator('location', true, { isArray: false }, 'dto', locationAttrsValidatorMap),
-  employeesRole: new LiteralFieldValidator('employeesRole', true, { isArray: true, mustBeFilled: true }, 'string', [new UUIDFormatValidationRule()]),
+  employeesRole: new DtoFieldValidator('employeesRole', true, { isArray: false }, 'dto', employeesRoleValidatorMap),
 };
 export const workshopARValidator = new DtoFieldValidator('workshopAr', true, { isArray: false }, 'dto', workshopAttrsVMap);
