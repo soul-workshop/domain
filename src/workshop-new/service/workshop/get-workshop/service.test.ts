@@ -1,5 +1,5 @@
 import {
-  describe, test, expect, spyOn, beforeEach,
+  describe, test, expect, beforeEach,
 } from 'bun:test';
 import { DomainUser } from 'rilata/src/app/caller';
 import { TestDatabase } from 'rilata/src/app/database/test-database';
@@ -45,7 +45,7 @@ describe('тесты сервиса getWorkshop', () => {
     expect(result.isSuccess()).toBe(true);
   });
 
-  test('Успех, получен обьект мастерской', async () => {
+  test('Провал, мастерская по такому пользователю не найден', async () => {
     const userWorkshopId:UuidType = '7f91d305-3f4b-4a3d-9bef-72cf3757cc33';
 
     const getWorkshopRequestDod:getWorkshopRequesttDod = {
