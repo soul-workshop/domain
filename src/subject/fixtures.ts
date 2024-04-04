@@ -13,8 +13,8 @@ import { UserAttrs } from './domain-data/user/params';
 import { SubjectModuleResolver } from './resolver';
 import { UserAR } from './domain-object/user/a-root';
 import { SubjectModuleResolves, subjectModuleResolves } from './resolves';
-import { UserDoesNotExistError } from './domain-object/user/repo-errors';
 import { UserFactory } from './domain-object/user/factory';
+import { UserDoesNotExistError } from './domain-data/user/repo-errors';
 
 export namespace SubjectModuleFixtures {
   type UserRecord = UserAttrs & { version: number };
@@ -30,6 +30,18 @@ export namespace SubjectModuleFixtures {
 
     constructor(testDb: FakeClassImplements.TestMemoryDatabase) {
       this.testRepo = new FakeClassImplements.TestMemoryRepository('user_repo', 'userId', testDb);
+    }
+
+    async getCurrentUser(id: string): Promise<Result<UserDoesNotExistError, UserAR>> {
+      const record = await this.testRepo.find(id);
+      if (record === undefined) {
+        return failure(dodUtility.getDomainError<UserDoesNotExistError>(
+          'UserDoesNotExistError',
+          'Пользователя с id:{{userId}} не существует, или эта запись уже удалена.',
+          { userId: id },
+        ));
+      }
+      return success(this.getUserAr(record));
     }
 
     init(resolver: SubjectModuleResolver): void {
