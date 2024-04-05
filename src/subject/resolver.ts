@@ -15,7 +15,6 @@ export class SubjectModuleResolver extends ModuleResolver<
     this.module = module;
     this.serverResolver = serverResolver;
     this.resolves.workshopFacade.init(this);
-    this.resolves.workshopFacade.init(this);
     this.serverResolver = serverResolver;
   }
 

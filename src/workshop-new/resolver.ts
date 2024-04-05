@@ -12,7 +12,7 @@ AuthJwtPayload, WorkshopModule, WorkshopModuleResolves> {
   }
 
   resolveRepo(key: unknown): ModuleResolveInstance {
-    if (key === WorkshopRepository) return this.resolves.workshopRepo;
+    if (key === WorkshopRepository) return this.resolves.workshopRepository;
     throw new Error('репозитория по этому ключу не найден.');
   }
 

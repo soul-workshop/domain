@@ -55,7 +55,7 @@ export namespace WorkshopModuleFixtures {
     ...workshopModuleResolves,
     db: testDb,
     busMessageRepo: eventRepo,
-    workshopRepo: new WorkshopRepositoryTestImpl(testDb),
+    workshopRepository: new WorkshopRepositoryTestImpl(testDb),
   };
 
   export const workshopRepoFixtures: TestBatchRecords<

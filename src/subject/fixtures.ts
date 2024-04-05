@@ -15,6 +15,8 @@ import { UserAR } from './domain-object/user/a-root';
 import { SubjectModuleResolves, subjectModuleResolves } from './resolves';
 import { UserFactory } from './domain-object/user/factory';
 import { UserDoesNotExistError } from './domain-data/user/repo-errors';
+import { WorkshopRepository } from '../workshop-new/domain-object/repo';
+import { WorkshopFacade } from '../workshop-new/facade';
 
 export namespace SubjectModuleFixtures {
   type UserRecord = UserAttrs & { version: number };
@@ -108,7 +110,7 @@ export namespace SubjectModuleFixtures {
     telegramAuthHashLifetimeLimitAsSeconds: 10, // default 10 seconds
     authentificateBotToken: '6698548206:AAHF49aVG7c-QkIbHQb-OBGwgkYdBRSmTCo',
     userRepo: new UserRepositoryTestImpl(testDb),
-    workshopFacade: 
+    workshopFacade: new WorkshopFacade(),
   };
 
   export const subjectRepoFixtures: TestBatchRecords<
