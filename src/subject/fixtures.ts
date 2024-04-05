@@ -108,6 +108,7 @@ export namespace SubjectModuleFixtures {
     telegramAuthHashLifetimeLimitAsSeconds: 10, // default 10 seconds
     authentificateBotToken: '6698548206:AAHF49aVG7c-QkIbHQb-OBGwgkYdBRSmTCo',
     userRepo: new UserRepositoryTestImpl(testDb),
+    workshopFacade: 
   };
 
   export const subjectRepoFixtures: TestBatchRecords<

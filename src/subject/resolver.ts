@@ -13,6 +13,8 @@ export class SubjectModuleResolver extends ModuleResolver<
   init(module: SubjectModule, serverResolver: ServerResolver<AuthJwtPayload>): void {
     // override without db.init()
     this.module = module;
+    this.serverResolver = serverResolver;
+    this.resolves.workshopFacade.init(this);
     this.resolves.workshopFacade.init(this);
     this.serverResolver = serverResolver;
   }
@@ -28,7 +30,7 @@ export class SubjectModuleResolver extends ModuleResolver<
     throw this.getLogger().error(`not finded key by: ${key}`, key);
   }
 
-  resolveFacade(key: unknown[]): ModuleResolveInstance {
+  resolveFacade(key: unknown): ModuleResolveInstance {
     if (key === WorkshopFacade) return this.resolves.workshopFacade;
     throw this.getLogger().error(`not find facade for key: ${key}`);
   }
