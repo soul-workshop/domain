@@ -5,7 +5,6 @@ import { storeDispatcher } from 'rilata/src/app/async-store/store-dispatcher';
 import { DomainUser } from 'rilata/src/app/caller';
 import { GettingCurrentUserServiceParams } from './s-params';
 import { getCurrentUserValidator } from './v-map';
-import { WorkshopReadRepository } from '../../../../workshop/domain-object/workshop/repository';
 import { UserRepository } from '../../../domain-object/user/repo';
 import { WorkshopFacade } from '../../../../workshop-new/facade';
 
@@ -39,8 +38,8 @@ export class GettingCurrentUserService extends QueryService<GettingCurrentUserSe
     }
     return success({
       ...result.value.getAttrs(),
-      workshopName: workshopAttrs.name,
-      workshopId: workshopAttrs.workshopId,
+      workshopName: workshopAttrs.value.name,
+      workshopId: workshopAttrs.value.name,
     });
   }
 }

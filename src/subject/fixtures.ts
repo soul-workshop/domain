@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import { EventRepository } from 'rilata/src/app/database/event-repository';
 import { DatabaseObjectSavingError } from 'rilata/src/common/exeptions';
 import { Logger } from 'rilata/src/common/logger/logger';
@@ -8,6 +9,9 @@ import { dodUtility } from 'rilata/src/common/utils/domain-object/dod-utility';
 import { dtoUtility } from 'rilata/src/common/utils/dto';
 import { FakeClassImplements } from 'rilata/tests/fixtures/fake-class-implements';
 import { TestBatchRecords } from 'rilata/src/app/database/types';
+import { DomainUser } from 'rilata/src/app/caller';
+import { GeneralModuleResolver } from 'rilata/src/app/module/types';
+import { ServiceResult } from 'rilata/src/app/service/types';
 import { UserRepository } from './domain-object/user/repo';
 import { UserAttrs } from './domain-data/user/params';
 import { SubjectModuleResolver } from './resolver';
@@ -15,11 +19,23 @@ import { UserAR } from './domain-object/user/a-root';
 import { SubjectModuleResolves, subjectModuleResolves } from './resolves';
 import { UserFactory } from './domain-object/user/factory';
 import { UserDoesNotExistError } from './domain-data/user/repo-errors';
-import { WorkshopRepository } from '../workshop-new/domain-object/repo';
 import { WorkshopFacade } from '../workshop-new/facade';
+import { GettingWorkshopServiceParams } from '../workshop-new/service/workshop/get-workshop/s-params';
 
 export namespace SubjectModuleFixtures {
   type UserRecord = UserAttrs & { version: number };
+
+  class TestWorkshopResolver implements WorkshopFacade {
+    init(resolver: GeneralModuleResolver): void {
+      throw new Error('Method not implemented.');
+    }
+
+    getWorkshop(workshopId: string, caller: DomainUser):
+    Promise<ServiceResult<GettingWorkshopServiceParams>> {
+      throw new Error('Method not implemented.');
+    }
+  }
+  const testWorkshopResolver = new TestWorkshopResolver();
 
   export class UserRepositoryTestImpl implements UserRepository {
     testRepo: FakeClassImplements.TestMemoryRepository<
@@ -110,7 +126,7 @@ export namespace SubjectModuleFixtures {
     telegramAuthHashLifetimeLimitAsSeconds: 10, // default 10 seconds
     authentificateBotToken: '6698548206:AAHF49aVG7c-QkIbHQb-OBGwgkYdBRSmTCo',
     userRepo: new UserRepositoryTestImpl(testDb),
-    workshopFacade: new WorkshopFacade(),
+    workshopFacade: testWorkshopResolver,
   };
 
   export const subjectRepoFixtures: TestBatchRecords<
