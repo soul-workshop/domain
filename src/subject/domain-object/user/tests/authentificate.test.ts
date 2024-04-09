@@ -6,6 +6,7 @@ import { UserAR } from '../a-root';
 import { UserAuthDomainQuery } from '../../../domain-data/user/authentificate/a-params';
 import { DomainServerFixtures } from '../../../../fixtures';
 import { SubjectModule } from '../../../module';
+import { JwtTokens } from 'cy-core/src/types';
 
 const server = DomainServerFixtures.getTestServer(['SubjectModule']);
 const serverResolver = server.getServerResolver();
@@ -52,10 +53,11 @@ describe('тесты аутентификации пользователя', () 
     expect(userArDateMock).toHaveBeenCalledTimes(1);
     expect(decoderDateMock).toHaveBeenCalledTimes(2);
     expect(result.isSuccess()).toBe(true);
-    expect(result.value).toEqual({
-      access: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNDYyZjBjNi0yNWM0LTQ1YTMtYmNmNS03ZDI1ZDJhOWE4ZGYiLCJ0ZWxlZ3JhbUlkIjo2OTQ1MjgyMzksImV4cCI6MTY5ODc0MzE5OTAwMCwidHlwIjoiYWNjZXNzIn0.eVm3IKi3S-1LtbldvJQyEu7DLVhwY3OfikqH5ORvm-c',
-      refresh: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNDYyZjBjNi0yNWM0LTQ1YTMtYmNmNS03ZDI1ZDJhOWE4ZGYiLCJ0ZWxlZ3JhbUlkIjo2OTQ1MjgyMzksImV4cCI6MTY5ODkxNTk5OTAwMCwidHlwIjoicmVmcmVzaCJ9.j3jPRE70ASIV_YNsbAXkzO9ZvPfdiDXDpNbrBITKOrU',
-    });
+
+    const tokens = result.value as JwtTokens;
+    expect(Object.keys(tokens).length).toBe(2);
+    expect(tokens.access).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNDYyZjBjNi0yNWM0LTQ1YTMtYmNmNS03ZDI1ZDJhOWE4ZGYiLCJ0ZWxlZ3JhbUlkIjo2OTQ1MjgyMzksImV4cCI6MTY5ODc0MzE5OTAwMCwidHlwIjoiYWNjZXNzIn0.eVm3IKi3S-1LtbldvJQyEu7DLVhwY3OfikqH5ORvm-c');
+    expect(tokens.refresh).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNDYyZjBjNi0yNWM0LTQ1YTMtYmNmNS03ZDI1ZDJhOWE4ZGYiLCJ0ZWxlZ3JhbUlkIjo2OTQ1MjgyMzksImV4cCI6MTY5ODkxNTk5OTAwMCwidHlwIjoicmVmcmVzaCJ9.j3jPRE70ASIV_YNsbAXkzO9ZvPfdiDXDpNbrBITKOrU');
   });
 
   test('провал, время авторизации по данному токену прошло', () => {

@@ -18,9 +18,6 @@ import { SubjectModuleResolver } from './resolver';
 import { UserAR } from './domain-object/user/a-root';
 import { SubjectModuleResolves, subjectModuleResolves } from './resolves';
 import { UserFactory } from './domain-object/user/factory';
-import { UserDoesNotExistError } from './domain-data/user/repo-errors';
-import { WorkshopFacade } from '../workshop-new/facade';
-import { GettingWorkshopServiceParams } from '../workshop-new/service/workshop/get-workshop/s-params';
 
 export namespace SubjectModuleFixtures {
   type UserRecord = UserAttrs & { version: number };
