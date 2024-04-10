@@ -4,7 +4,6 @@ import { ModuleType } from 'rilata/src/app/module/types';
 import { GeneraQueryService, GeneralCommandService, GeneralEventService } from 'rilata/src/app/service/types';
 import { AuthentificatingUserService } from './service/user/authentificate/service';
 import { RefreshingTokenService } from './service/user/refresh/service';
-import { GettingCurrentUserService } from './service/user/get-current-user/service';
 import { GettingUserService } from './service/user/get-user/service';
 import { GettingUsersService } from './service/user/get-users/service';
 
@@ -16,7 +15,6 @@ export class SubjectModule extends Module<AuthJwtPayload> {
   queryServices: GeneraQueryService[] = [
     new AuthentificatingUserService(),
     new RefreshingTokenService(),
-    new GettingCurrentUserService(),
     new GettingUserService(),
     new GettingUsersService(),
   ];

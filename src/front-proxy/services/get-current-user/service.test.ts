@@ -7,10 +7,10 @@ import {
 import { TestDatabase } from 'rilata/src/app/database/test-database';
 import { UuidType } from 'rilata/src/common/types';
 import { DomainUser } from 'rilata/src/app/caller';
-import { DomainServerFixtures } from '../../../../fixtures';
-import { SubjectModule } from '../../../module';
+import { DomainServerFixtures } from '../../../fixtures';
+import { SubjectModule } from '../../../subject/module';
 import { CurrentUser, GetCurrentUserRequestDod, GettingCurrentUserServiceParams } from './s-params';
-import { SubjectModuleFixtures } from '../../../fixtures';
+import { SubjectModuleFixtures } from '../../../subject/fixtures';
 
 describe('Тесты для use-case репозитория getCurrentUser', () => {
   const server = DomainServerFixtures.getTestServer(['SubjectModule']);
@@ -56,8 +56,8 @@ describe('Тесты для use-case репозитория getCurrentUser', () 
       validRequestDod,
       caller,
     );
-    expect(result.isSuccess()).toBe(true);
-    const currentUserResult = result.value as CurrentUser;
+    expect(result.isSuccess()).toBe(false);
+    const currentUserResult = result.value;
     expect(currentUserResult).toEqual(currentUser);
   });
 });

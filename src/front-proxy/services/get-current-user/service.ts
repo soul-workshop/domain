@@ -5,8 +5,8 @@ import { storeDispatcher } from 'rilata/src/app/async-store/store-dispatcher';
 import { DomainUser } from 'rilata/src/app/caller';
 import { GettingCurrentUserServiceParams } from './s-params';
 import { getCurrentUserValidator } from './v-map';
-import { UserRepository } from '../../../domain-object/user/repo';
-import { WorkshopFacade } from '../../../../workshop-new/facade';
+import { WorkshopFacade } from '../../../workshop-new/facade';
+import { SubjectFacade } from '../../../subject/facade';
 
 export class GettingCurrentUserService extends QueryService<GettingCurrentUserServiceParams> {
   aRootName: 'UserAR' = 'UserAR' as const;
@@ -26,20 +26,20 @@ export class GettingCurrentUserService extends QueryService<GettingCurrentUserSe
     }
     const caller = store.caller as DomainUser;
     const { userId } = caller;
-    const repoUsers = UserRepository.instance(this.moduleResolver);
-    const result = await repoUsers.getUser(userId);
+    const repoUser = SubjectFacade.instance(this.moduleResolver);
+    const result = await repoUser.getUser(userId, store.caller);
     if ((result).isFailure()) {
       throw await this.logger.error(`Пользователь с id: ${userId} подписанным токеном авторизации в базе данных не существует`);
     }
     const repoWorkshop = WorkshopFacade.instance(this.moduleResolver);
-    const workshopAttrs = (await repoWorkshop.getWorkshop(workshopId, store.caller));
-    if (!workshopAttrs) {
+    const workshopResult = (await repoWorkshop.getWorkshop(workshopId, store.caller));
+    if (workshopResult.isFailure()) {
       throw await this.logger.error(`Workshop-a с workshopId: ${workshopId} не существует`);
     }
     return success({
-      ...result.value.getAttrs(),
-      workshopName: workshopAttrs.value.name,
-      workshopId: workshopAttrs.value.name,
+      ...result.value,
+      workshopName: workshopResult.value.name,
+      workshopId: workshopResult.value.workshopId,
     });
   }
 }

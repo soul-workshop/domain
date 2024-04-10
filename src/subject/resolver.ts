@@ -5,7 +5,6 @@ import { ServerResolver } from 'rilata/src/app/server/server-resolver';
 import { SubjectModule } from './module';
 import { SubjectModuleResolves } from './resolves';
 import { UserRepository } from './domain-object/user/repo';
-import { WorkshopFacade } from '../workshop-new/facade';
 
 export class SubjectModuleResolver extends ModuleResolver<
   AuthJwtPayload, SubjectModule, SubjectModuleResolves
@@ -13,8 +12,6 @@ export class SubjectModuleResolver extends ModuleResolver<
   init(module: SubjectModule, serverResolver: ServerResolver<AuthJwtPayload>): void {
     // override without db.init()
     this.module = module;
-    this.serverResolver = serverResolver;
-    this.resolves.workshopFacade.init(this);
     this.serverResolver = serverResolver;
   }
 
@@ -30,7 +27,6 @@ export class SubjectModuleResolver extends ModuleResolver<
   }
 
   resolveFacade(key: unknown): ModuleResolveInstance {
-    if (key === WorkshopFacade) return this.resolves.workshopFacade;
     throw this.getLogger().error(`not find facade for key: ${key}`);
   }
 }
