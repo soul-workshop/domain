@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import { EventRepository } from 'rilata/src/app/database/event-repository';
 import { DatabaseObjectSavingError } from 'rilata/src/common/exeptions';
 import { Logger } from 'rilata/src/common/logger/logger';
@@ -30,6 +31,18 @@ export namespace SubjectModuleFixtures {
 
     constructor(testDb: FakeClassImplements.TestMemoryDatabase) {
       this.testRepo = new FakeClassImplements.TestMemoryRepository('user_repo', 'userId', testDb);
+    }
+
+    async getCurrentUser(id: string): Promise<Result<UserDoesNotExistError, UserAR>> {
+      const record = await this.testRepo.find(id);
+      if (record === undefined) {
+        return failure(dodUtility.getDomainError<UserDoesNotExistError>(
+          'UserDoesNotExistError',
+          'Пользователя с id:{{userId}} не существует, или эта запись уже удалена.',
+          { userId: id },
+        ));
+      }
+      return success(this.getUserAr(record));
     }
 
     init(resolver: SubjectModuleResolver): void {

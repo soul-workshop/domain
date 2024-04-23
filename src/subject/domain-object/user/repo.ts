@@ -10,6 +10,7 @@ export interface UserRepository {
   init(resolver: SubjectModuleResolver): void
   findByTelegramId(telegramId: TelegramId): Promise<UserAR[]>
   addUser(user: UserAR): Promise<void>
+  getCurrentUser(userId: UserId): Promise<Result<UserDoesNotExistError, UserAR>>
   getUser(userId: UserId): Promise<Result<UserDoesNotExistError, UserAR>>
   getUsers(userIds: UserId[]): Promise<UserAR[]>
 }

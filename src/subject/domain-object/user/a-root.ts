@@ -8,7 +8,7 @@ import { Logger } from 'rilata/src/common/logger/logger';
 import { DomainResult } from 'rilata/src/domain/domain-data/params-types';
 import { JwtCreator } from 'rilata/src/app/jwt/jwt-creator';
 import { JwtVerifier } from 'rilata/src/app/jwt/jwt-verifier';
-import { AuthJwtPayload, JwtTokens } from 'cy-core/src/types';
+import { AuthJwtPayload } from 'cy-core/src/types';
 import {
   UserAttrs, UserParams, UserType,
 } from '../../domain-data/user/params';
