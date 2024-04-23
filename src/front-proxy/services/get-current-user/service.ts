@@ -2,7 +2,6 @@ import { QueryService } from 'rilata/src/app/service/query-service';
 import { RequestDodValidator, ServiceResult } from 'rilata/src/app/service/types';
 import { success } from 'rilata/src/common/result/success';
 import { storeDispatcher } from 'rilata/src/app/async-store/store-dispatcher';
-import { DomainUser } from 'rilata/src/app/caller';
 import { GettingCurrentUserServiceParams } from './s-params';
 import { getCurrentUserValidator } from './v-map';
 import { WorkshopFacade } from '../../../workshop-new/facade';
@@ -13,7 +12,7 @@ export class GettingCurrentUserService extends QueryService<GettingCurrentUserSe
 
   serviceName: 'getCurrentUser' = 'getCurrentUser' as const;
 
-  protected supportedCallers = ['DomainUser'] as const;
+  protected supportedCallers = ['DomainUser', 'ModuleCaller'] as const;
 
   protected validator:
   RequestDodValidator<GettingCurrentUserServiceParams> = getCurrentUserValidator;
@@ -24,20 +23,25 @@ export class GettingCurrentUserService extends QueryService<GettingCurrentUserSe
     if (store.caller.type !== 'DomainUser') {
       throw this.logger.error('Пользователь не доменный пользователь');
     }
-    const caller = store.caller as DomainUser;
-    const { userId } = caller;
-    const repoUser = SubjectFacade.instance(this.moduleResolver);
-    const result = await repoUser.getUser(userId, store.caller);
-    if ((result).isFailure()) {
-      throw await this.logger.error(`Пользователь с id: ${userId} подписанным токеном авторизации в базе данных не существует`);
-    }
-    const repoWorkshop = WorkshopFacade.instance(this.moduleResolver);
-    const workshopResult = (await repoWorkshop.getWorkshop(workshopId, store.caller));
+    const workshopFacade = WorkshopFacade.instance(this.moduleResolver);
+    const workshopResult = (await workshopFacade.getWorkshop(workshopId, store.caller));
     if (workshopResult.isFailure()) {
-      throw await this.logger.error(`Workshop-a с workshopId: ${workshopId} не существует`);
+      throw await this.logger.error(
+        `Workshop-a с workshopId: ${workshopId} не существует`,
+        { result: workshopResult.value },
+      );
+    }
+    const { userId } = store.caller;
+    const subjectFacade = SubjectFacade.instance(this.moduleResolver);
+    const userResult = await subjectFacade.getUser(userId, store.caller);
+    if ((userResult).isFailure()) {
+      throw await this.logger.error(
+        `Пользователь с id: ${userId} подписанным токеном авторизации в базе данных не существует`,
+        { result: workshopResult.value },
+      );
     }
     return success({
-      ...result.value,
+      ...userResult.value,
       workshopName: workshopResult.value.name,
       workshopId: workshopResult.value.workshopId,
     });

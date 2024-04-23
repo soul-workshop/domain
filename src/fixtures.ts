@@ -7,6 +7,9 @@ import { SubjectModuleFixtures } from './subject/fixtures';
 import { WorkshopModule } from './workshop-new/module';
 import { WorkshopModuleResolver } from './workshop-new/resolver';
 import { WorkshopModuleFixtures } from './workshop-new/fixture';
+import { FrontProxyModule } from './front-proxy/module';
+import { FrontendProxyModuleResolver } from './front-proxy/resolver';
+import { FrontProxyModuleFixtures } from './front-proxy/fixtures';
 
 export namespace DomainServerFixtures {
   export function getTestServer<M extends CraftyardServerModules>(
@@ -17,6 +20,7 @@ export namespace DomainServerFixtures {
     const starter = new CraftyardServerStarter<CraftyardServerModules>([
       [SubjectModule, SubjectModuleResolver, SubjectModuleFixtures.subjectModuleTestResolves],
       [WorkshopModule, WorkshopModuleResolver, WorkshopModuleFixtures.workshopResolves],
+      [FrontProxyModule, FrontendProxyModuleResolver, FrontProxyModuleFixtures.FrontProxyResolves],
     ]);
     return starter.start(runModules) as CraftyardServer;
   }

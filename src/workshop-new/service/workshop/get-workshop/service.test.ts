@@ -8,7 +8,7 @@ import { uuidUtility } from 'rilata/src/common/utils/uuid/uuid-utility';
 import { DomainServerFixtures } from '../../../../fixtures';
 import { WorkshopModule } from '../../../module';
 import { WorkshopModuleFixtures } from '../../../fixture';
-import { GettingWorkshopServiceParams, getWorkshopRequesttDod } from './s-params';
+import { GettingWorkshopServiceParams, GetWorkshopRequestDod } from './s-params';
 
 describe('тесты сервиса getWorkshop', () => {
   const server = DomainServerFixtures.getTestServer(['WorkshopModule']);
@@ -28,7 +28,7 @@ describe('тесты сервиса getWorkshop', () => {
   test('Успех, получен обьект мастерской', async () => {
     const userWorkshopId:UuidType = '6f91d305-3f4b-4a3d-9bef-72cf3757cc33';
 
-    const getWorkshopRequestDod:getWorkshopRequesttDod = {
+    const getWorkshopRequestDod: GetWorkshopRequestDod = {
       meta: {
         name: 'getWorkshop',
         requestId: uuidUtility.getNewUUID(),
@@ -48,7 +48,7 @@ describe('тесты сервиса getWorkshop', () => {
   test('Провал, мастерская по такому пользователю не найден', async () => {
     const userWorkshopId:UuidType = '7f91d305-3f4b-4a3d-9bef-72cf3757cc33';
 
-    const getWorkshopRequestDod:getWorkshopRequesttDod = {
+    const getWorkshopRequestDod:GetWorkshopRequestDod = {
       meta: {
         name: 'getWorkshop',
         requestId: uuidUtility.getNewUUID(),

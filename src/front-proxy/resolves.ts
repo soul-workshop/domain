@@ -8,3 +8,8 @@ export type FrontendProxyResolves = ModuleResolves<FrontProxyModule> & {
   subjectFacade: SubjectFacade,
   workshopFacade: WorkshopFacade,
 }
+
+export const frontendProxyModuleResolves: Pick<FrontendProxyResolves, 'moduleUrl' | 'moduleName'> = {
+  moduleUrl: '/api/frontend-proxy-module/',
+  moduleName: 'FrontProxyModule',
+};

@@ -12,7 +12,7 @@ export class GettingUserService extends QueryService<GetUserServiceParams> {
 
   public serviceName: 'getUser' = 'getUser' as const;
 
-  protected supportedCallers: readonly ('ModuleCaller' | 'AnonymousUser' | 'DomainUser')[] = ['DomainUser'];
+  protected supportedCallers = ['DomainUser', 'ModuleCaller'] as const;
 
   protected validator: RequestDodValidator<GetUserServiceParams> = getUserValidator;
 

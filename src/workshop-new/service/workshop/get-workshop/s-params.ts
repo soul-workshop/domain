@@ -4,7 +4,7 @@ import { OutputAggregateDataTransfer } from 'rilata/src/domain/domain-data/domai
 import { WorkshopAttrs, WorkshopParams } from '../../../domain-data/params';
 import { WorkshopDoesntExistError } from '../../../domain-data/repo-erros';
 
-export type getWorkshopRequesttDod = {
+export type GetWorkshopRequestDod = {
     meta: {
         name: 'getWorkshop',
         requestId: UuidType,
@@ -19,7 +19,7 @@ export type GetWorkshopModelOut = WorkshopAttrs;
 
 export type GettingWorkshopServiceParams = QueryServiceParams<
   WorkshopParams,
-  getWorkshopRequesttDod,
+  GetWorkshopRequestDod,
   GetWorkshopModelOut,
   WorkshopDoesntExistError
 >
